@@ -2,8 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed } from 'discord.js'
 import { Command } from '../interfaces/Command'
 
-const ONION_DEATH_TIME = 10000
-// const ONION_DEATH_TIME = 24 * 60 * 60 * 1000 // 24 hours in millis
+const ONION_DEATH_TIME = 24 * 60 * 60 * 1000 // 24 hours in millis
 const INTERVALS = [1 / 2, 3 / 4, 7 / 8, 15 / 16, 31 / 32]
 
 let timers: NodeJS.Timeout[]
@@ -28,8 +27,8 @@ export const onions: Command = {
 					clearTimeout(timer)
 				})
 			}
-			reply.setTitle('Message title')
-			reply.setDescription('Some description')
+			reply.setTitle('Onions watered')
+			reply.setDescription('よくできました！ Well done! Timer has been reset for 24 hours.')
 		}
 		reply.setAuthor({ name: user.tag, iconURL: user.displayAvatarURL() })
 
