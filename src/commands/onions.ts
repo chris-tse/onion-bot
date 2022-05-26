@@ -2,9 +2,11 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 import { MessageEmbed } from 'discord.js'
 import { Command } from '../interfaces/Command'
 
-const ONION_DEATH_TIME = 24 * 60 * 60 * 1000 // 24 hours in millis
+const ONION_DEATH_TIME = 10000
+// const ONION_DEATH_TIME = 24 * 60 * 60 * 1000 // 24 hours in millis
+const INTERVALS = [1 / 2, 3 / 4, 7 / 8, 15 / 16, 31 / 32]
 
-let currentTimer: NodeJS.Timeout
+let timers: NodeJS.Timeout[]
 
 export const onions: Command = {
 	data: new SlashCommandBuilder()
@@ -21,7 +23,11 @@ export const onions: Command = {
 		const reply = new MessageEmbed()
 
 		if (action === 'water') {
-			clearTimeout(currentTimer)
+			if (timers) {
+				timers.forEach(timer => {
+					clearTimeout(timer)
+				})
+			}
 			reply.setTitle('Message title')
 			reply.setDescription('Some description')
 		}
@@ -29,8 +35,10 @@ export const onions: Command = {
 
 		await interaction.editReply({ embeds: [reply] })
 
-		currentTimer = setTimeout(() => {
-			channel?.send('water da onion')
-		}, ONION_DEATH_TIME)
+		timers = INTERVALS.map(interval => {
+			return setTimeout(() => {
+				channel?.send(`Water the onion. There are ${ONION_DEATH_TIME - ONION_DEATH_TIME * interval}ms left `)
+			}, ONION_DEATH_TIME * interval)
+		})
 	},
 }
